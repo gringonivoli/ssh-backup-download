@@ -1,12 +1,11 @@
 import os
+import json
 from dotenv import load_dotenv
 
 
 load_dotenv()
 
 CONFIG = {
-    'remote_url': os.getenv('HOST_URLS').split(','),
-    'remote_username': os.getenv('HOST_USERS').split(','),
-    'remote_passphrase': os.getenv('PASSPHRASE'),
-    'remote_ssh_key': os.getenv('SSH_KEY')
+    'hosts': json.loads(os.getenv('HOSTS')),
+    'local_path': os.getenv('LOCAL_PATH')
 }
