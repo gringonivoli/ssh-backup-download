@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  ssh-backup-download:
+    build: .
+    volumes:
+      - .:/app

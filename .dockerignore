@@ -1,0 +1,5 @@
+.venv
+keys/ssh_for_backups_rsa
+.vscode
+.DS_Store
+__pycache__
