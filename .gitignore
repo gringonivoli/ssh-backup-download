@@ -1,5 +1,6 @@
 # custom
-keys
+keys/*
+!keys/README.md
 .DS_Store
 
 # ides and editors things
