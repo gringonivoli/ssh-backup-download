@@ -42,8 +42,8 @@ class DownloaderClient:
         return pkey
 
     def _progress(self, filename, size, sent):
-    	sys.stdout.write("%s\'s progress: %.2f%%   \r" %
-    	                 (filename, float(sent)/float(size)*100))
+        sys.stdout.write("%s\'s progress: %.2f%%   \r" %
+                         (filename, float(sent)/float(size)*100))
 
     def disconnect(self):
         self.client.close()
