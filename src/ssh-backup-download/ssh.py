@@ -5,7 +5,7 @@ from paramiko.auth_handler import AuthenticationException
 from scp import SCPClient
 
 
-class Client:
+class DownloaderClient:
     def __init__(self, remote_url='', remote_username='', ssh_key='', remote_passphrase='', port='22'):
         self.remote_url = remote_url
         self.remote_user = remote_username
@@ -13,9 +13,9 @@ class Client:
         self.password = remote_passphrase
         self.port = port
         self.client = None
-        self.pkey = self.__get_ssh_key()
+        self.pkey = self._get_ssh_key()
 
-    def __connect(self):
+    def _connect(self):
         if self.client is None:
             try:
                 client = SSHClient()
@@ -28,31 +28,32 @@ class Client:
                     port=self.port
                 )
             except AuthenticationException:
-                raise AuthenticationException('Authentication failed: did you remember to create a SSH Key?')
+                raise AuthenticationException(
+                    'Authentication failed: did you remember to create a SSH Key?')
             finally:
                 return client
         return self.client
 
-    def __get_ssh_key(self):
+    def _get_ssh_key(self):
         f = open(self.ssh_key, 'r')
         s = f.read()
         keyfile = StringIO(s)
         pkey = RSAKey.from_private_key(keyfile, password=self.password)
         return pkey
 
-    def __progress(self, filename, size, sent):
-    	sys.stdout.write("%s\'s progress: %.2f%%   \r" % (filename, float(sent)/float(size)*100) )
+    def _progress(self, filename, size, sent):
+    	sys.stdout.write("%s\'s progress: %.2f%%   \r" %
+    	                 (filename, float(sent)/float(size)*100))
 
     def disconnect(self):
         self.client.close()
 
     def execute(self, cmd):
-        self.client = self.__connect()
+        self.client = self._connect()
         stdin, stdout, stderr = self.client.exec_command(cmd)
         return stdout.readlines()
 
     def download(self, file, local_path=''):
-        client = self.__connect()
-        scp = SCPClient(client.get_transport(), progress=self.__progress)
+        client = self._connect()
+        scp = SCPClient(client.get_transport(), progress=self._progress)
         scp.get(file, local_path=local_path)
-

@@ -1,6 +1,6 @@
 import notification_type
 from config import CONFIG
-from ParamikoTest import Client
+from ssh import DownloaderClient
 from telegram_notifications import send_notification
 
 
@@ -9,7 +9,7 @@ def main():
     for host in CONFIG.get('hosts', []):
         host_name = host.get("remote_url", "🤔")
         print(f'\n🔥 Download from: {host_name}\n')
-        client = Client(**host)
+        client = DownloaderClient(**host)
         result = client.execute('cd db_backups; ls -dt $PWD/* | head -n 1')
         client.download(result[0].replace('\n', ''), local_path=CONFIG.get('local_path', ''))
         send_notification(
