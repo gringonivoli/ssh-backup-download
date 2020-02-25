@@ -6,7 +6,7 @@ from scp import SCPClient
 
 
 class DownloaderClient:
-    def __init__(self, remote_url='', remote_username='', ssh_key='', remote_passphrase='', port='22'):
+    def __init__(self, remote_url='', remote_username='', ssh_key='', remote_passphrase='', port='22', progress_info=False):
         self.remote_url = remote_url
         self.remote_user = remote_username
         self.ssh_key = ssh_key
@@ -14,6 +14,7 @@ class DownloaderClient:
         self.port = port
         self.client = None
         self.pkey = self._get_ssh_key()
+        self.progress_info = progress_info
 
     def _connect(self):
         if self.client is None:
@@ -55,5 +56,6 @@ class DownloaderClient:
 
     def download(self, file, local_path=''):
         client = self._connect()
-        scp = SCPClient(client.get_transport(), progress=self._progress)
+        progress = self._progress if self.progress_info else None
+        scp = SCPClient(client.get_transport(), progress=progress)
         scp.get(file, local_path=local_path)
