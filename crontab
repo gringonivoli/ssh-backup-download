@@ -1,2 +1,2 @@
 # backup diariamente a las 23:15
-15 20 * * * /usr/local/bin/python /app/src/ssh-backup-download/main.py > /proc/1/fd/1 2>/proc/1/fd/2
+15 2 * * * /usr/local/bin/python /app/src/ssh-backup-download/main.py > /proc/1/fd/1 2>/proc/1/fd/2
